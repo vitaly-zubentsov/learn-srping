@@ -1,9 +1,7 @@
 package com.zubentsov.springdemo;
 
-public interface Coach {
-
-	public String getDialyWorcout();
+public interface FortuneService {
 	
 	public String getDialyFortune();
-	
+
 }

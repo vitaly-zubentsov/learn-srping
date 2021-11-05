@@ -1,18 +1,18 @@
 package com.zubentsov.springdemo;
 
-public class TrackCoach implements Coach {
+public class GymCoach implements Coach {
 
 	FortuneService fortuneService;
 	
 	
 	
-	public TrackCoach(FortuneService fortuneService) {
+	public GymCoach(FortuneService fortuneService) {
 		this.fortuneService = fortuneService;
-	}	
+	}
 	
 	@Override
 	public String getDialyWorcout() {
-		return "Hard work on track";
+		return "1 hour in gym";
 	}
 	
 	@Override

@@ -12,6 +12,8 @@ public class HelloSpringApp {
 		
 		System.out.println(theCoach.getDialyWorcout());
 		
+		System.out.println(theCoach.getDialyFortune());
+		
 		context.close();
 		
 	}
