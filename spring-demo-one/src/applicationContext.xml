@@ -14,6 +14,7 @@
     	
     <bean id="arrayFortuneService"
     		class="com.zubentsov.springdemo.ArrayFortuneservice">
+    		<property name="fortunes" value="0,1,2" />
     	</bean>
 
  	<bean id="myCoach"
@@ -28,9 +29,16 @@
  		class="com.zubentsov.springdemo.CricketCoach">	
  		
  		
- 		<property name="fortuneService" ref="arrayFortuneService" />
- 		<property name="fortunes" value="{[0],[1],[2]}" />
+ 		<property name="fortuneService" ref="myFortuneService" />
+ 		<property name="emailAddress" value="${foo.email}" />
  		<property name="team" value="${foo.team}" />
+ 	</bean>
+ 	
+ 	 <bean id="myGymCoach"
+ 		class="com.zubentsov.springdemo.GymCoach">
+ 			
+ 		<constructor-arg name="fortuneService" ref="arrayFortuneService" />
+ 		
  	</bean>
     
 </beans>
