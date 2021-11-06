@@ -7,30 +7,19 @@
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:property-placeholder location="classpath:sport.properties"/>
+	
+    <!-- Define your beans here -->
+    
+    <!-- define the dependency -->
     <bean id="myFortuneService"
-    		class="com.zubentsov.springdemo.HappyFortuneService">
+    		class="com.luv2code.springdemo.HappyFortuneService">
     	</bean>
-    	
-    <bean id="arrayFortuneService"
-    		class="com.zubentsov.springdemo.ArrayFortuneservice">
-    	</bean>
-
+    
  	<bean id="myCoach"
- 		class="com.zubentsov.springdemo.GymCoach">	
+ 		class="com.luv2code.springdemo.TrackCoach">	
  		
- 		
+ 		<!-- set up constructor injection -->
  		<constructor-arg ref="myFortuneService" />
- 	</bean>
- 	
- 	
- 	<bean id="myCricketCoach"
- 		class="com.zubentsov.springdemo.CricketCoach">	
- 		
- 		
- 		<property name="fortuneService" ref="arrayFortuneService" />
- 		<property name="fortunes" value="{[0],[1],[2]}" />
- 		<property name="team" value="${foo.team}" />
  	</bean>
     
 </beans>
