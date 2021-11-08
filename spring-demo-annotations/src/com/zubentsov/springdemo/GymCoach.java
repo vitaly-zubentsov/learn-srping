@@ -1,5 +1,8 @@
 package com.zubentsov.springdemo;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -36,6 +39,17 @@ public class GymCoach implements Coach {
 	public String getDialyFortune() {
 		return fortuneService.getFortune();
 	}
+	
+	@PostConstruct
+	void init() {
+		System.out.println("post construct method");
+	}
+	
+	@PreDestroy
+	void destroy() {
+		System.out.println("pre destroy method");
+	}
+	
 	
 
 }

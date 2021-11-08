@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@Scope("prototype")
+@Scope("singleton")
 public class TennisCoach implements Coach {
 
 	@Autowired
