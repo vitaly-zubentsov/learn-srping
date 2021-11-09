@@ -9,7 +9,7 @@
 
 <body>
 
-	<form action="processFormSecond" method="GET">
+	<form action="processFormThird" method="GET">
 
 	<input type="text" name="studentName" placeholder="what is your name?" />
 	
