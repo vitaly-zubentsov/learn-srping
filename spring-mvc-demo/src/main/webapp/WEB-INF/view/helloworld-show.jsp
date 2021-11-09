@@ -15,6 +15,11 @@ Hello world of spring!
 
 Student name: ${param.studentName}
 
+
+<br/>
+
+message: ${message}
+
 </body>
 
 </html>
