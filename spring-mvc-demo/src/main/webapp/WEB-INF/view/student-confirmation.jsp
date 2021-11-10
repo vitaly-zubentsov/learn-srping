@@ -15,5 +15,9 @@
 	<br/>
 	
 	The country : ${student.country}
+	
+	<br/>
+	
+	Favorite language: ${student.favoriteLanguage}
 		
 </body>
