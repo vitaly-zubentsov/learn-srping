@@ -6,7 +6,7 @@ import org.hibernate.cfg.Configuration;
 
 import com.zubentsov.demo.entity.Student;
 
-public class CreateStudentDemo {
+public class ReadStudentDemo {
 
 	public static void main(String[] args) {
 
@@ -16,12 +16,12 @@ public class CreateStudentDemo {
 
 		// create session
 		Session session = factory.getCurrentSession();
-
+		
 		try {
 
-			Student tempStudent = new Student("Pavel", "Zavodnov", "pz@google.com");
+			Student tempStudent = new Student("Taco", "Coldonov", "TC@google.com");
 
-			System.out.println("Studen id before save in db : " + tempStudent.getId());
+			System.out.println("Studen before save in db : " + tempStudent);
 
 			session.beginTransaction();
 
@@ -31,12 +31,21 @@ public class CreateStudentDemo {
 
 			System.out.println("Save student to db");
 
-			System.out.println("Studen id after save in db : " + tempStudent.getId());
+			System.out.println("Studen after save in db : " + tempStudent);
 
+			// get object from db
+			session = factory.getCurrentSession();
+
+			session.beginTransaction();
+
+			Student studdentFromDB = session.get(Student.class, tempStudent.getId());
+
+			session.getTransaction().commit();
+
+			System.out.println("Studen from db : " + studdentFromDB);
 		} finally {
 			factory.close();
 		}
-
 	}
 
 }
