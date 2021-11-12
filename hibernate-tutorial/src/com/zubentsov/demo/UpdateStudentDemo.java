@@ -74,6 +74,7 @@ public class UpdateStudentDemo {
 				System.out.println(nextStudent);
 				
 			}
+			session.getTransaction().commit();
 			
 			
 
