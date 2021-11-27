@@ -25,12 +25,11 @@ public class DeleteInstructorDetailDemo {
 
 			session.beginTransaction();
 
-			// get list of object from DB
+			// get list of instructorDetail from DB
 
 			List<InstructorDetail> instructorsDetail = session.createQuery("FROM InstructorDetail").getResultList();
-			instructorsDetail = null;
 
-			// if not empty delete one instructor detail
+			// if not empty delete one random instructor detail
 			if (!instructorsDetail.isEmpty()) {
 
 				printInstructorsDetail(instructorsDetail);
@@ -38,23 +37,29 @@ public class DeleteInstructorDetailDemo {
 
 				InstructorDetail instructorDetail = instructorsDetail.get(random.nextInt(instructorsDetail.size()));
 
-				System.out.println("Instructor to delete : /n" + instructorDetail);
+				System.out.println("InstructorDetail to delete : /n" + instructorDetail);
 
-				// DELETE instructor
-				// this will ALSO delete the instructorDetail because
-				// CascadType.ALL
+				System.out
+						.println("Instructor associated with instructorDetail : /n" + instructorDetail.getInstructor());
+
+				// save id of associated instructor to check deleting
+				int associatedInstructorID = instructorDetail.getInstructor().getId();
+				// for delete instructorDetail we need
+				// remove associated object reference
+				// break bidirectional link
+
+				instructorDetail.getInstructor().setInstructorDetail(null);
 
 				session.delete(instructorDetail);
 
 				session.getTransaction().commit();
 
-				// CHECK cascade delete
+				// CHECK non cascade delete
 				session = factory.getCurrentSession();
 				session.beginTransaction();
 
-				// get list instructor detail and print
-				instructorsDetail = session.createQuery("FROM InstructorDetail").getResultList();
-				printInstructorsDetail(instructorsDetail);
+				Instructor instructor = session.get(Instructor.class, associatedInstructorID);
+				System.out.println("Associated instructor : " + instructor);
 
 				session.getTransaction().commit();
 			} else {
