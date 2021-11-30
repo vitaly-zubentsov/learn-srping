@@ -8,7 +8,7 @@ import com.zubentsov.demo.entity.Course;
 import com.zubentsov.demo.entity.Instructor;
 import com.zubentsov.demo.entity.InstructorDetail;
 
-public class CreateInstructorDemo {
+public class GetIstructorCoursesDemo {
 
 	public static void main(String[] args) {
 
@@ -21,20 +21,32 @@ public class CreateInstructorDemo {
 
 		try {
 
+			// create object
+			InstructorDetail instructorDetail = new InstructorDetail("youtubeAny", "play football");
+
+			Instructor instructor = new Instructor("Ivan", "Ivanov", "ivani@mail.ru");
+
+			// associate the objects
+			instructor.setInstructorDetail(instructorDetail);
 
 			session.beginTransaction();
 
-			int instructorId = 1;
-			
-			Instructor instructor = session.get(Instructor.class, instructorId);
-			
+			// this will ALSO save the instructorDetail because
+			// CascadType.ALL
+			session.save(instructor);
 
-			System.out.println("Instructor : " + instructor);
-			
-			System.out.println("Courses for the instructor" + instructor.getCourses());
-			
 			session.getTransaction().commit();
-			
+
+			// CHECK
+			session = factory.getCurrentSession();
+
+			session.beginTransaction();
+
+			InstructorDetail instructorDetailFromBD = session.get(InstructorDetail.class, instructorDetail.getId());
+
+			session.getTransaction().commit();
+
+			System.out.println("Instructor detail from bd :" + instructorDetailFromBD);
 
 		} catch (Exception ex) {
 			System.out.println(ex);
