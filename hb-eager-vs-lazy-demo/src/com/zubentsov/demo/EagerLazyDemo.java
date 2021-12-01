@@ -3,6 +3,7 @@ package com.zubentsov.demo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 
 import com.zubentsov.demo.entity.Course;
 import com.zubentsov.demo.entity.Instructor;
@@ -23,14 +24,17 @@ public class EagerLazyDemo {
 
 			session.beginTransaction();
 
+			// Solution 2: get HQL Query Fetch
+
 			// get instructor by id
 			int instructorId = 1;
 
-			Instructor instructor = session.get(Instructor.class, instructorId);
+			Query<Instructor> query = session.createQuery(
+					"SELECT i FROM Instructor i " + "JOIN FETCH i.courses " + "WHERE i.id=:theInstructorId",
+					Instructor.class);
+			query.setParameter("theInstructorId", instructorId);
 
-			// Solution 1: get courses before commit
-
-			System.out.println("Instructor courses " + instructor.getCourses());
+			Instructor instructor = query.getSingleResult();
 
 			session.getTransaction().commit();
 
