@@ -20,19 +20,23 @@ public class EagerLazyDemo {
 		Session session = factory.getCurrentSession();
 
 		try {
-			
+
 			session.beginTransaction();
 
-			// get instructor by id 
+			// get instructor by id
 			int instructorId = 1;
-			
+
 			Instructor instructor = session.get(Instructor.class, instructorId);
-					
-			System.out.println("Instructor :" + instructor);
-			
+
+			// Solution 1: get courses before commit
+
 			System.out.println("Instructor courses " + instructor.getCourses());
-			
+
 			session.getTransaction().commit();
+
+			// try use instructor courses after commit
+
+			System.out.println("Instructor courses after commit" + instructor.getCourses());
 
 		} catch (Exception ex) {
 			System.out.println(ex);
