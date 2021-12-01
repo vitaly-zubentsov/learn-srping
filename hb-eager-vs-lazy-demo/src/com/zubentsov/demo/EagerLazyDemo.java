@@ -1,5 +1,7 @@
 package com.zubentsov.demo;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -22,33 +24,61 @@ public class EagerLazyDemo {
 
 		try {
 
+			// start a transaction
 			session.beginTransaction();
 
-			// Solution 2: get HQL Query Fetch
+			// get the instructor from db
+			int theId = 1;
+			Instructor instructor = session.get(Instructor.class, theId);
 
-			// get instructor by id
-			int instructorId = 1;
+			System.out.println("Instructor: " + instructor);
 
-			Query<Instructor> query = session.createQuery(
-					"SELECT i FROM Instructor i " + "JOIN FETCH i.courses " + "WHERE i.id=:theInstructorId",
-					Instructor.class);
-			query.setParameter("theInstructorId", instructorId);
+			// commit transaction
+			session.getTransaction().commit();
 
-			Instructor instructor = query.getSingleResult();
+			// close the session
+			session.close();
+
+			System.out.println("\n The session is now closed!\n");
+
+			//
+			// THIS HAPPENS SOMEWHERE ELSE / LATER IN THE PROGRAM
+
+			// YOU NEED TO GET A NEW SESSION
+			//
+
+			System.out.println("\n\n Opening a NEW session \n");
+
+			session = factory.getCurrentSession();
+
+			session.beginTransaction();
+
+			// solution 3: HQL query and assign in java object later in program
+
+			// get courses for a given instructor
+			Query<Course> query = session
+					.createQuery("select c from Course c " + "where c.instructor.id=:theInstructorId", Course.class);
+
+			query.setParameter("theInstructorId", theId);
+
+			List<Course> tempCourses = query.getResultList();
+
+			System.out.println("tempCourses: " + tempCourses);
+
+			// now assign to instructor object in memory
+			instructor.setCourses(tempCourses);
+
+			System.out.println("Courses: " + instructor.getCourses());
 
 			session.getTransaction().commit();
 
-			// try use instructor courses after commit
-
-			System.out.println("Instructor courses after commit" + instructor.getCourses());
-
-		} catch (Exception ex) {
-			System.out.println(ex);
+			System.out.println("Done!");
 		} finally {
+
+			// add clean up code
 			session.close();
+
 			factory.close();
 		}
-
 	}
-
 }
