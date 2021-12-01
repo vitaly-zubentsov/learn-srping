@@ -28,13 +28,11 @@ public class EagerLazyDemo {
 			
 			Instructor instructor = session.get(Instructor.class, instructorId);
 					
-			session.getTransaction().commit();
-
-			//try use instructor courses after commit
-			
 			System.out.println("Instructor :" + instructor);
 			
 			System.out.println("Instructor courses " + instructor.getCourses());
+			
+			session.getTransaction().commit();
 
 		} catch (Exception ex) {
 			System.out.println(ex);
