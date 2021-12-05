@@ -10,7 +10,7 @@ import com.zubentsov.demo.entity.InstructorDetail;
 import com.zubentsov.demo.entity.Review;
 import com.zubentsov.demo.entity.Student;
 
-public class GetStudentAndAddCoursesDemo {
+public class DeleteStudentAndCourseDemo {
 
 	public static void main(String[] args) {
 
@@ -27,21 +27,20 @@ public class GetStudentAndAddCoursesDemo {
 			session.beginTransaction();
 
 			// get student
-			int studentId = 1; // fix to simplify example
+			int studentId = 1; //fix to simplify example 
 			Student student = session.get(Student.class, studentId);
+			
+			// create courses and add them to student
+			Course course1 = new Course("How to spend all money in one");
+			Course course2 = new Course("1000 m in ten seconds");
 
-			// DELETE student
-			// should delete only student and rows in course_student table
-			session.delete(student);
+			student.addCourse(course1);
+			student.addCourse(course2);
 
-			int courseId = 10; // fix to simplify example
-
-			Course course = session.get(Course.class, courseId);
-
-			// DELETE courses
-			// should delete only student and rows in course_student table
-			session.delete(course);
-
+			//save courses
+			session.save(course1);
+			session.save(course2);
+			
 			session.getTransaction().commit();
 
 		} catch (Exception ex) {
