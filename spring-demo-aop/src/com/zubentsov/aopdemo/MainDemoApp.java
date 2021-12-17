@@ -21,7 +21,7 @@ public class MainDemoApp {
 		accountDAO.setServiceCode("red");
 
 		// call business method
-		accountDAO.addAccount();
+		accountDAO.addAccount("easy", 9);
 		accountDAO.doWork();
 
 		// get paremeters from DAO

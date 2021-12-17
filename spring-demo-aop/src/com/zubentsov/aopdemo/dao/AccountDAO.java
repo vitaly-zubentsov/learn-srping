@@ -9,7 +9,7 @@ public class AccountDAO {
 
 	private String serviceCode;
 
-	public void addAccount() {
+	public void addAccount(String name, int id) {
 
 		System.out.println(this.getClass() + " Do some db work to add account\n");
 	}
