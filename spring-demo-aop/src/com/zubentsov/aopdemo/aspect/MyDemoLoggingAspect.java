@@ -14,13 +14,27 @@ public class MyDemoLoggingAspect {
 	private void forDaoPackage() {
 	}
 
+	// create pointcut for getter and setter method DAO package
+	@Pointcut("execution(* com.zubentsov.aopdemo.dao.*.set* (..))")
+	private void setter() {
+	}
+
+	@Pointcut("execution(* com.zubentsov.aopdemo.dao.*.get*(..))")
+	private void getter() {
+	}
+
+	// create pointcut: include package DAO and exclude getter and setter
+	@Pointcut("forDaoPackage() && !(getter() || setter())")
+	private void forDaoPackageNoGetterAndSetter() {
+	}
+
 	// this is where we add all of our related advice for logging
-	@Before("forDaoPackage()")
+	@Before("forDaoPackageNoGetterAndSetter()")
 	public void beforeAddAccountAdvice() {
 		System.out.println("----------Call of aspect method---------------");
 	}
 
-	@Before("forDaoPackage()")
+	@Before("forDaoPackageNoGetterAndSetter()")
 	public void performApiAnalitics() {
 		System.out.println("----------do some analitic stuff---------------");
 	}

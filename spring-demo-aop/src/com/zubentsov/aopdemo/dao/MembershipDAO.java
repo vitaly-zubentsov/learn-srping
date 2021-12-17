@@ -7,12 +7,12 @@ public class MembershipDAO {
 
 	public void addSillyMember() {
 
-		System.out.println(this.getClass() + " Adding a membership account");
+		System.out.println(this.getClass() + " Adding a membership account  \n");
 	}
 
 	public void goToSleep() {
 
-		System.out.println(this.getClass() + "I'm going to sleep");
+		System.out.println(this.getClass() + "I'm going to sleep  \n");
 	}
 
 }
