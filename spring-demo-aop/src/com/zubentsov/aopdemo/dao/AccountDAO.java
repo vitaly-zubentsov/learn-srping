@@ -37,7 +37,7 @@ public class AccountDAO {
 	}
 
 	public void setServiceCode(String serviceCode) {
-		System.out.println(this.getClass() + "set ServiceCode \n");
+		System.out.println(this.getClass() + " set ServiceCode \n");
 		this.serviceCode = serviceCode;
 	}
 
