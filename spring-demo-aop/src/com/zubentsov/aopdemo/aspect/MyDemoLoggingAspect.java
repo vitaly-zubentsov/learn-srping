@@ -28,11 +28,21 @@ public class MyDemoLoggingAspect {
 		
 		//print out the result of method call
 		System.out.println("-------------result is : " + result);  
+		
+		//post process data
+		
+		convertAccountNameToUpperCase(result);
+		
+		System.out.println("------------- modifed result is : " + result);  
 		 
 	}
 	
 	
 	
+	
+
+
+
 	// this is where we add all of our related advice for logging
 	@Before("com.zubentsov.aopdemo.aspect.AopExpressions.forDaoPackageNoGetterAndSetter()")
 	public void beforeAddAccountAdvice(JoinPoint jointPoint) {
@@ -57,6 +67,13 @@ public class MyDemoLoggingAspect {
 		}
 		
 		
+	}
+	
+	private void convertAccountNameToUpperCase(List<Account> result) {
+		
+		for(Account account:result) {
+			account.setName(account.getName().toUpperCase()); 
+		}
 	}
 
 }
