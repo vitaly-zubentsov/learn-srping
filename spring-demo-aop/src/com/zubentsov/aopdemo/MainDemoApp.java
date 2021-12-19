@@ -17,14 +17,19 @@ public class MainDemoApp {
 		// get accountDAO from contex
 		AccountDAO accountDAO = context.getBean("accountDAO", AccountDAO.class);
 
-		// call method to find accounts
+		// call method to find accounts with flag throwing exception
+		boolean throwException = false;
+		List<Account> accounts = null;
 
-		List<Account> accounts = accountDAO.findAccounts();
+		try {
+			accounts = accountDAO.findAccounts(throwException);
+		} catch (Exception ex) {
+			System.out.println("print exception from main: " + ex);
+		}
 
-		
 		System.out.println("\nprint accounts from main: \n");
-		System.out.println(accounts );
-		// close context 
+		System.out.println(accounts);
+		// close context
 		context.close();
 	}
 

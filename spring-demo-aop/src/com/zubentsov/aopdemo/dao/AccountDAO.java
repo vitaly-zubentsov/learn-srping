@@ -25,15 +25,19 @@ public class AccountDAO {
 
 		return false;
 	}
-	
-	public List<Account> findAccounts(){
-		
+
+	public List<Account> findAccounts(boolean throwException) {
+
+		if (throwException) {
+			throw new RuntimeException("exception in method AccountsWithThrow");
+		}
+
 		List<Account> accounts = new ArrayList<Account>();
-		
-		accounts.add(new Account("Anna","Silver"));
-		accounts.add(new Account("Victor","Platinum"));
-		accounts.add(new Account("Igor","Gold"));
-		
+
+		accounts.add(new Account("Anna", "Silver"));
+		accounts.add(new Account("Victor", "Platinum"));
+		accounts.add(new Account("Igor", "Gold"));
+
 		return accounts;
 	}
 
