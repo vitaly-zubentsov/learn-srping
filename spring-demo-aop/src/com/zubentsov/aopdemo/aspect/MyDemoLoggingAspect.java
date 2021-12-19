@@ -1,17 +1,38 @@
 package com.zubentsov.aopdemo.aspect;
 
+import java.util.List;
+
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import com.zubentsov.aopdemo.Account;
+
 @Aspect
 @Component
 @Order(-10000)
 public class MyDemoLoggingAspect {
 
+	//add new advice for @AfterReturning on the find account method
+	
+	@AfterReturning(pointcut="execution(* com.zubentsov.aopdemo.dao.AccountDAO.findAccounts(..)) ",
+			returning= "result")
+	public void afterReturningFindAccountAdvice( JoinPoint joinPoint, List<Account> result) {
+		
+		//print in which method are advising 
+		System.out.println("\n------------- executing @AfterReturning on: " +  joinPoint.getSignature().toShortString() + "----------------- ");
+		
+		//print out the result of method call
+		System.out.println("-------------result is : " + result);  
+		 
+	}
+	
+	
+	
 	// this is where we add all of our related advice for logging
 	@Before("com.zubentsov.aopdemo.aspect.AopExpressions.forDaoPackageNoGetterAndSetter()")
 	public void beforeAddAccountAdvice(JoinPoint jointPoint) {

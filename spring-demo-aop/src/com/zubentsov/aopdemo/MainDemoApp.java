@@ -1,9 +1,10 @@
 package com.zubentsov.aopdemo;
 
+import java.util.List;
+
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.zubentsov.aopdemo.dao.AccountDAO;
-import com.zubentsov.aopdemo.dao.MembershipDAO;
 
 public class MainDemoApp {
 
@@ -16,26 +17,14 @@ public class MainDemoApp {
 		// get accountDAO from contex
 		AccountDAO accountDAO = context.getBean("accountDAO", AccountDAO.class);
 
-		// add paremeters to account DAO
-		accountDAO.setName("silver");
-		accountDAO.setServiceCode("red");
+		// call method to find accounts
 
-		// call business method
-		accountDAO.addAccount("easy", 9);
-		accountDAO.doWork();
+		List<Account> accounts = accountDAO.findAccounts();
 
-		// get paremeters from DAO
-		accountDAO.getName();
-		accountDAO.getServiceCode();
-
-		// get membershipDao
-		MembershipDAO membershipDAO = context.getBean("membershipDAO", MembershipDAO.class);
-
-		// call business membership method
-		membershipDAO.addSillyMember();
-		membershipDAO.goToSleep();
-
-		// close context
+		
+		System.out.println("\nprint accounts from main: \n");
+		System.out.println(accounts );
+		// close context 
 		context.close();
 	}
 
