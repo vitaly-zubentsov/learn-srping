@@ -1,11 +1,14 @@
 package com.zubentsov.aopdemo.aspect;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -19,11 +22,45 @@ import com.zubentsov.aopdemo.Account;
 @Order(-10000)
 public class MyDemoLoggingAspect {
 
-	@After("execution(* com.zubentsov.aopdemo.dao.AccountDAO.findAccounts(..)) ")
+	private Logger logger = Logger.getLogger(this.getClass().getName());
+
+	@Around("execution(* com.zubentsov.aopdemo.service.*.getFortune(..))")
+	public Object aroundGetFortune(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
+		// print in which method are advising
+		logger.info("\n=======> executing @After (finnaly) on: " + proceedingJoinPoint.getSignature().toShortString());
+
+		// get begin timestamp
+		long begin = System.currentTimeMillis();
+
+		// execute the method
+		Object result = null;
+
+		try {
+			result = proceedingJoinPoint.proceed();
+		} catch (Exception ex) {
+
+			// log the exception
+			logger.warning(ex.getMessage());
+
+			// give a user custom message
+			result = "Major accident! B ut no worries, be happy";
+		}
+
+		// get end timestamp
+		long end = System.currentTimeMillis();
+
+		// calculate and print duration
+		logger.info("=======> Duration: " + ((end - begin) / 1000) + " sec");
+
+		return result;
+	}
+
+	@After("execution(* com.zubentsov.aopdemo.dao.AccountDAO.findAccounts(..))")
 	public void afterFindAccountAdvice(JoinPoint joinPoint) {
 
 		// print in which method are advising
-		System.out.println("\n------------- executing @After (finnaly) on: " + joinPoint.getSignature().toShortString()
+		logger.info("\n------------- executing @After (finnaly) on: " + joinPoint.getSignature().toShortString()
 				+ "----------------- \n");
 
 	}
@@ -32,11 +69,11 @@ public class MyDemoLoggingAspect {
 	public void afterThrowingFindAccountAdvice(JoinPoint joinPoint, Exception exception) {
 
 		// print in which method are advising
-		System.out.println("\n------------- executing @AfterThrowing on: " + joinPoint.getSignature().toShortString()
+		logger.info("\n------------- executing @AfterThrowing on: " + joinPoint.getSignature().toShortString()
 				+ "----------------- ");
 
 		// print out the result of method call
-		System.out.println("-------------exeption is : " + exception);
+		logger.info("-------------exeption is : " + exception);
 
 	}
 
@@ -44,28 +81,28 @@ public class MyDemoLoggingAspect {
 	public void afterReturningFindAccountAdvice(JoinPoint joinPoint, List<Account> result) {
 
 		// print in which method are advising
-		System.out.println("\n------------- executing @AfterReturning on: " + joinPoint.getSignature().toShortString()
+		logger.info("\n------------- executing @AfterReturning on: " + joinPoint.getSignature().toShortString()
 				+ "----------------- ");
 
 		// print out the result of method call
-		System.out.println("-------------result is : " + result);
+		logger.info("-------------result is : " + result);
 
 		// post process data
 
 		convertAccountNameToUpperCase(result);
 
-		System.out.println("------------- modifed result is : " + result);
+		logger.info("------------- modifed result is : " + result);
 
 	}
 
 	// this is where we add all of our related advice for logging
 	@Before("com.zubentsov.aopdemo.aspect.AopExpressions.forDaoPackageNoGetterAndSetter()")
 	public void beforeAddAccountAdvice(JoinPoint jointPoint) {
-		System.out.println("----------Call of aspect method---------------");
+		logger.info("----------Call of aspect method---------------");
 
 		// display method signature
 		MethodSignature methodSignature = (MethodSignature) jointPoint.getSignature();
-		System.out.println("Method signatture: " + methodSignature);
+		logger.info("Method signatture: " + methodSignature);
 
 		// display method arguments
 		Object[] args = jointPoint.getArgs();
@@ -73,11 +110,11 @@ public class MyDemoLoggingAspect {
 		for (Object arg : args) {
 
 			if (arg instanceof String) {
-				System.out.println("arg: " + arg + " - it is a String");
+				logger.info("arg: " + arg + " - it is a String");
 			} else if (arg instanceof Integer) {
-				System.out.println("arg: " + arg + " - it is an Integer");
+				logger.info("arg: " + arg + " - it is an Integer");
 			} else {
-				System.out.println("arg: " + arg);
+				logger.info("arg: " + arg);
 			}
 		}
 
