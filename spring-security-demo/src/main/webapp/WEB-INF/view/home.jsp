@@ -2,17 +2,19 @@
 <%@ taglib prefix="security"
 	uri="http://www.springframework.org/security/tags"%>
 
+<!DOCTYPE HTML>
+
 <html>
 
 <head>
-<title>luv2code Company Home Page</title>
+<title>Company Home Page</title>
 </head>
 
 <body>
-	<h2>luv2code Company Home Page</h2>
+	<h2>Company Home Page</h2>
 	<hr>
 
-	<p>Welcome to the luv2code company home page!</p>
+	<p>Welcome to the company home page!</p>
 
 	<hr>
 
@@ -24,6 +26,19 @@
 		<br> <br> Role(s):
 		<security:authentication property="principal.authorities" />
 	</p>
+
+	<hr>
+	<p>
+		<a href="${pageContext.request.contextPath}/leaders">Leadership
+			Meeting</a> (Only for Manager peeps)
+	</p>
+
+	<hr>
+	<p>
+		<a href="${pageContext.request.contextPath}/systems">IT Systems
+			Meeting</a> (Only for Admin peeps)
+	</p>
+
 
 
 	<form:form action="${pageContext.request.contextPath}/logout"
