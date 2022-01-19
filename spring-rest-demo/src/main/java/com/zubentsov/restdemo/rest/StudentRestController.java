@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,20 +20,27 @@ public class StudentRestController {
 
 	// define PostConstruct to load student ... only once
 
-	@PostConstruct 
+	@PostConstruct
 	public void LoadData() {
-		
-List<Student> students = new ArrayList<>();
-		
+
+	    students = new ArrayList<>();
+
 		students.add(new Student("Ivan", "Ivanov"));
 		students.add(new Student("Gleb", "Patrushev"));
 		students.add(new Student("Maria", "Ivanovna"));
-		
+
 	}
 
 	@GetMapping("/students")
-	public List<Student> getListOfStudents() {
+	public List<Student> getStudents() {
 
 		return students;
 	}
+	
+	
+	@GetMapping("/students/{studentid}")
+	public Student getStudent(@PathVariable int studentid) {
+		return students.get(studentid);
+	}
+
 }
