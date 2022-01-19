@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +26,7 @@ public class StudentRestController {
 	@PostConstruct
 	public void LoadData() {
 
-	    students = new ArrayList<>();
+		students = new ArrayList<>();
 
 		students.add(new Student("Ivan", "Ivanov"));
 		students.add(new Student("Gleb", "Patrushev"));
@@ -36,11 +39,32 @@ public class StudentRestController {
 
 		return students;
 	}
-	
-	
-	@GetMapping("/students/{studentid}")
-	public Student getStudent(@PathVariable int studentid) {
-		return students.get(studentid);
+
+	@GetMapping("/students/{studentId}")
+	public Student getStudent(@PathVariable int studentId) {
+
+		// check student id against list size
+		if ((studentId >= students.size()) || (studentId < 0)) {
+			throw new StudentNotFoundException("StudenId not found - " + studentId);
+		}
+		return students.get(studentId);
 	}
 
+	// Add exception handler using @ExceprionHandler
+
+	@ExceptionHandler
+	public ResponseEntity<StudentErrorResponse> handleException(StudentNotFoundException exc) {
+		
+		//Create a student error response
+		StudentErrorResponse studentErrorResponse = new StudentErrorResponse();
+		
+		studentErrorResponse.setStatus(HttpStatus.NOT_FOUND.value());
+		studentErrorResponse.setMessage(exc.getMessage());
+		studentErrorResponse.setTimeStamp(System.currentTimeMillis()); 
+				
+		//return response entity
+		
+		return new ResponseEntity<>(studentErrorResponse, HttpStatus.NOT_FOUND);
+	}
+ 
 }
