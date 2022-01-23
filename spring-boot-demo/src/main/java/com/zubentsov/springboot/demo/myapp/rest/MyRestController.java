@@ -12,4 +12,9 @@ public class MyRestController {
 	public String helloWorld() {
 		return "HELLO WORLD! Current time: " + LocalDateTime.now();
 	}
+	
+	@GetMapping("/workout")
+	public String doWorkout() {
+		return "run 5 km";
+	}
 }
