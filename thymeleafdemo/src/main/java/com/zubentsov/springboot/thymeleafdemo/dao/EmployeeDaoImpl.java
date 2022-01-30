@@ -47,7 +47,7 @@ public class EmployeeDaoImpl implements EmployeeDao {
 	@Override
 	public void delete(int employeeId) {
 		
-		Query query = entityManager.createQuery("delete from Customer where id=:customerId");
+		Query query = entityManager.createQuery("delete from Employee where id=:customerId");
 
 		query.setParameter("customerId", employeeId);
 
